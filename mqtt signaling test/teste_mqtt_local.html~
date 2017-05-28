@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+<meta charset="UTF-8">
+<title>Teste de MQTT e WebRTC</title>
+<script type="text/javascript" src="js/mqttws31.js"></script>
+<script type="text/javascript" src="js/wslocal.js"></script>
+</head>
+<body>
+	<label for="consoleText"> Logs: </label></br>
+	<textarea id="consoleText" rows="4" cols="60"></textarea></br>
+
+	<label for="topicoPublicar"> Tópico</label>
+	<input id="topicoPublicar" type="text">
+	<label for="messageTopico"> Mensagem</label>
+	<input id="messageTopico" type="text">
+	<input id="publishButton" type="button" value="publicar" onclick="publishing()"></br>
+
+	<label for="messageReceived">Mensagens recebidas: </label></br>
+	<textarea id="messageReceived" rows="4" cols="60"></textarea></br>
+	<label for="topicoAssinado"> Assinar Topico:</label>
+	<input id="topicoAssinado" type="input">
+	<input id="topicoAssinadoButton" type="button" value="Assinar"></br>
+	<table>
+		<thead>
+			<th>
+				<td colspan="2">Topicos Assinados</td>
+			</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td>exemplo</td>
+				<td><input type="button" value="sair"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>

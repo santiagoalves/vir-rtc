@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+<meta charset="UTF-8">
+<title>Teste de MQTT e WebRTC</title>
+<script type="text/javascript" src="js/mqttws31.js"></script>
+<script type="text/javascript" src="js/wslocal.js"></script>
+<script type="text/javascript" src="js/adapter.js"></script>
+<script type="text/javascript" src="js/webrtcConfig_samepage_sample.js"></script>
+<script type="text/javascript">
+	var _ = function (_){return _;};
+    var _fill = function(_){eval("window."+_.id + "=\"" + _.value+"\";");}
+</script>
+<style type="text/css">
+    .borda{
+        border: 1px black solid;
+    }
+    .float{
+        float:left;
+    }
+</style>
+</head>
+<body>
+	<label for="consoleText"> Logs: </label></br>
+	<textarea id="consoleText" rows="4" cols="60"></textarea></br>
+
+	<label for="topicoPublicar"> Tópico</label>
+	<input id="topicoPublicar" type="text">
+	<label for="messageTopico"> Mensagem</label>
+	<input id="messageTopico" type="text">
+	<input id="publishButton" type="button" value="publicar" onclick="publishing(topicoPublicar,messageTopico)"></br>
+
+	<label for="messageReceived">Mensagens recebidas dos tópicos assinados: </label></br>
+	<textarea id="messageReceived" rows="4" cols="60"></textarea></br>
+	<label for="topicoAssinado"> Assinar Tópico:</label>
+	<input id="topicoAssinado" type="input" onblur="_fill(this)">
+	<input id="topicoAssinadoButton" type="button" value="Assinar" onclick="assinarTopico(topicoAssinado)"></br>
+    <lable for="topicoDesassinado" > Desassinar tópico: </lable>
+    <input id="topicoDesassinado" type="text" >
+    <input type="button" value="Desassinar" onclick="desassinarTopico(topicoDesassinado)">
+	
+</br>
+<hr>
+</br>
+<label for="videoLocal">Video local que será usado pelo mqtt:</label><br>
+<div class="borda float">
+    <video id="videoLocal" autoplay muted></video>
+</div>
+<div class="borda float">
+    <video id="videoRemote" autoplay muted></video>
+</div>
+</br>
+<hr>
+<div>
+    <input type="button" value="Start" onclick="startLocal()">
+    <input type="button" value="Call" onclick="iniciarTransmissaoRemota()">
+    <input type="button" value="Finish">
+</div>
+
+</body>
+</html>

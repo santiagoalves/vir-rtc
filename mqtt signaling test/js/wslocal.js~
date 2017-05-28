@@ -1,0 +1,61 @@
+'use strict';
+
+function clientMqtt(user, pass) {
+
+	var wsbroker = "m13.cloudmqtt.com"; // mqtt websocket enabled broker
+
+	var wsport = 33723 // port for above
+
+	var client = new Paho.MQTT.Client(wsbroker, wsport, user);
+
+	client.onConnectionLost = function(responseObject) {
+		document.querySelector("#consoleText").value += "\nconnection lost: " + responseObject.errorMessage;
+		console.log("connection lost: " + responseObject.errorMessage);
+	};
+
+	client.onMessageArrived = function(message) {
+		if (message.payloadString) {
+			document.querySelector("#messageReceived").value += "\n" + message.destinationName, ' -- ', message.payloadString;
+			console.log(message.destinationName, ' -- ', message.payloadString);
+		}
+	};
+
+ client.publish = function(msg) {
+		var message = new Paho.MQTT.Message(msg);
+		message.destinationName = document.querySelector("#topicoPublicar").value;
+		message.retained = true;
+		client.send(message);
+	}
+
+	var options = {
+		useSSL : true,
+		userName : user,
+		password : pass,
+		timeout : 3,
+		onSuccess : function() {
+			document.querySelector("#consoleText").value += "\nmqtt connected";
+			console.log("mqtt connected");
+			//client.publish("Meu nome é johnny");
+		},
+		onFailure : function(message) {
+			document.querySelector("#consoleText").value += "\nConnection failed: " + message.errorMessage;
+			alert("Connection failed: " + message.errorMessage);
+		}
+	};
+
+	client.connect(options);
+
+	return client;
+
+}
+
+//var mqtt = clientMqtt('vsbfalal','D1ibi1c5jLda');
+var mqtt = clientMqtt('other','other');
+
+function publishing(){
+	mqtt.publish(document.querySelector("#messageTopico").value);
+}
+
+
+
+

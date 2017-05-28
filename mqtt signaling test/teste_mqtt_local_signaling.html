@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt_br">
+<head>
+<meta charset="UTF-8">
+<title>Teste de MQTT e WebRTC</title>
+<script type="text/javascript" src="js/mqttws31.js"></script>
+<script type="text/javascript" src="js/signalingChannel.js"></script>
+<script type="text/javascript" src="js/adapter.js"></script>
+<script type="text/javascript" src="js/webrtcConfigwithSignaling.js"></script>
+<script type="text/javascript">
+	var _ = function (_){return _;};
+    var _fill = function(_){eval("window."+_.id + "=\"" + _.value+"\";");}
+</script>
+<style type="text/css">
+    .borda{
+        border: 1px black solid;
+        
+    }
+    .float{
+        float:left;
+    }
+</style>
+</head>
+<body>
+<hr>
+</br>
+<div class="borda float">
+    <video id="videoLocal" autoplay></video>
+</div>
+<div class="borda float">
+    <video id="videoRemote" autoplay></video>
+</div>
+</br>
+<hr>
+<div>
+    <input type="button" value="Start" onclick="initResources()">
+    <input type="button" value="Call Comunication" onclick="call()">
+    <input type="button" value="Finish" onclick="finalizarTransmicaoRemota()">
+</div>
+
+</body>
+</html>
