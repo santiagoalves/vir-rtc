@@ -1,0 +1,143 @@
+<html data-ng-app="virRtc">
+    <head>
+        <title>Login VIR-RTC</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <script type="application/javascript" src="js/libs/angular.js"></script>
+        <script type="application/javascript" src="js/libs/angularModules/angular-local-storage.js"></script>
+        <script type="application/javascript" src="js/libs/angularModules/ui-bootstrap.js"  ></script>
+        <script type="application/javascript">
+            
+            teste = {erro:{stack:"",localized:"teste"}};
+            
+            angular.module("virRtc",['LocalStorageModule','ui.bootstrap'])
+            .controller("virRtcCtrl",($scope,localStorageService, $uibModal)=>{
+                
+                var cookie = localStorageService;
+               
+                $scope._form={};
+                $scope.ioTDeviceSelected = false;
+                
+                $scope.connectWith = (credentials,type)=>{
+//                    cookie.set('credentials',JSON.stringify(credentials));
+//                    cookie.set('type',type.label);
+//                    type.doConnection(credentials);
+                   $scope.modalInstance = $uibModal.open({
+                        templateUrl: 'videoInterfone.html',
+                        backdrop:'static',
+                        scope:$scope
+                    });
+                    
+                    
+                    
+                    $scope.ok = function() {
+                        $scope.modalInstance.close();
+                    };
+
+                }
+                
+                $scope.types = [
+                    {label:'VideoInterfone-Device', doConnection:credentials=>{
+                            console.log('connect as IoT')
+                    }},
+                    {label:'Client-Device',doConnection:credentials=>{
+                        console.log('connect as Client')
+                    }}
+                ];
+                
+                $scope.connectionTypeSelected = (type)=> $scope.ioTDeviceSelected = type.label === $scope.types[0].label;
+                
+                getForm = ()=> $scope._form.virRtcForm;
+                
+                (function initFormFields(){
+                    if(cookie.isSupported && cookie.get('credentials') && cookie.get('type')){
+                        console.log('os dados de login foram armazenados com sucesso!!!');
+                        $scope.credentials = JSON.parse(cookie.get('credentials'));
+                        $scope.type = $scope.types.filter(i=>i.label === cookie.get('type'))[0];
+                        $scope.connectionTypeSelected($scope.type);
+                    }
+                })();
+                
+            }).controller('ModalInstanceCtrl', function($scope, $uibModalInstance) {
+              $scope.items = ['item1', 'item2', 'item3'];
+              $scope.selected = {
+                item: $scope.items[0]
+              };
+
+              
+              $scope.cancel = function() {
+                $uibModalInstance.dismiss('cancel');
+              };
+
+            });
+        </script>
+        <style>
+            .jumbotron{
+                width:400px;
+                text-align: center;
+                margin: 5% auto 0 auto;
+            }
+            .form-control{
+                margin-bottom: 10px;
+               // margin: 5px 10px ;
+            }
+
+        </style>
+    </head>
+    <body data-ng-controller="virRtcCtrl">
+        <div class="jumbotron  d-flex align-items-center">
+<!--
+            {{credentials}}
+            <br/>
+            {{type}}
+            <br/>
+            {{_form.virRtcForm.$valid}}
+-->        <div class="container-fluid">
+            <h3 data-ng-bind="'Welcome to your Remote Video Interfone'"></h3>
+            <form name="_form.virRtcForm" novalidate autocomplete="false">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control" data-ng-model="credentials.host" placeholder="host" data-ng-required="true" name="host"/>
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="text" class="form-control" data-ng-model="credentials.port" placeholder="port" data-ng-required="true" name="port"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" data-ng-model="credentials.roomName" placeholder="roomName" data-ng-required="true" name="roomName"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="text" class="form-control" data-ng-model="credentials.user" placeholder="user" data-ng-required="true" name="user"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="password" class="form-control" data-ng-model="credentials.password" placeholder="password" data-ng-required="true" name="password"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <select class="form-control" data-ng-model="type" data-ng-options="type as type.label for type in types" data-ng-required="true" name="type" data-ng-change="connectionTypeSelected(type)">
+                            <option value="">Select the type of connection...</option>
+                        </select>
+                    </div>
+                     <div class="col-xs-12" data-ng-if="ioTDeviceSelected">
+                        <input type="text" class="form-control" data-ng-model="credentials.remoteEventTopic" placeholder="Remote Event Listener Topic" data-ng-required="true" name="remoteEventTopic"/>
+                    </div>
+                    <div class="col-xs-12">
+                        <input type="button" class="btn btn-primary btn-block" data-ng-click="connectWith(credentials,type)" value="connect"/>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+        <script type="text/ng-template" id="videoInterfone.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            oi mundo loco
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">finish</button>
+        </div>
+    </script>
+    </body>
+</html>
